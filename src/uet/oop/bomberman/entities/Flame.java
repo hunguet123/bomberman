@@ -1,6 +1,6 @@
 package uet.oop.bomberman.entities;
 
-import uet.oop.bomberman.GameViewManeger;
+import uet.oop.bomberman.GameViewManager;
 import uet.oop.bomberman.entities.SubClass.Constant;
 import uet.oop.bomberman.graphics.AnimationFrame;
 import uet.oop.bomberman.graphics.Sprite;
@@ -73,8 +73,9 @@ public class Flame extends DynamicEntity  {
     }
     public void startFlame() {
         startTime = System.currentTimeMillis();
-        GameViewManeger.stillObjects.add(this);
+        GameViewManager.stillObjects.add(this);
         animationFrame.loadFrame();
+        Constant.getSound(Constant.URL_SOUND_BOMB_EXPLOSION).start();
     }
     private void stopFlame() {
         status = Constant.STATUS_DESTROYED;

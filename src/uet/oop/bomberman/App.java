@@ -7,8 +7,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-            MenuManeger menuManeger = new MenuManeger();
-            stage = menuManeger.getMainStage();
+            MenuManager menuManager = new MenuManager();
+            stage = menuManager.getMainStage();
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

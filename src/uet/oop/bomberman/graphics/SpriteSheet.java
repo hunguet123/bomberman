@@ -1,7 +1,11 @@
 package uet.oop.bomberman.graphics;
 
+import javafx.scene.layout.Background;
+import uet.oop.bomberman.entities.Brick;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 

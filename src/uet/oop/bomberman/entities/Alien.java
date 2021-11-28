@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Alien extends DynamicEntity {
-    protected final double speed = 1;
+    protected double speed = 2;
     private final int MOVE_NO_COLLISION = 1;
     private final int MOVE_WITH_COLLISION = -1;
     public Alien(int xUnit, int yUnit, Sprite sprite) {

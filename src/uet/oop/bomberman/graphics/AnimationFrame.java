@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
+import uet.oop.bomberman.GameViewManager;
+import uet.oop.bomberman.entities.DynamicEntity;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.SubClass.Constant;
 
@@ -39,6 +41,10 @@ public class AnimationFrame {
         this.framesDestroy = framesDestroy;
     }
 
+    public void setTime(double time) {
+        this.time = time;
+    }
+
     public void loadFrame() {
         if(entity.status == Constant.STATUS_UP) {
             frames = framesUp;
@@ -54,7 +60,7 @@ public class AnimationFrame {
             frames = Constant.getTransparent();
         }
 
-        if(entity.status != Constant.STATUS_STAND){
+        if(entity.status != Constant.STATUS_STAND && entity.status != Constant.STATUS_SET_BOMB){
             if(isPressed == false) {
                 isPressed = true;
                 timeline = new Timeline(

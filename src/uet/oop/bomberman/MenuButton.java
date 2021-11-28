@@ -14,6 +14,7 @@ public class MenuButton extends Button{
     private final String BUTTON_PRESSED_STYLE = "-fx-background-color: #FA8072";
     private final String BUTTON_FREE_STYLE = "-fx-background-color: #FFA07A";
 
+    public boolean isPress = false;
     public MenuButton(String text) {
         setText(text);
         //setButtonFont();
@@ -30,14 +31,14 @@ public class MenuButton extends Button{
         setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 23));
     }*/
 
-    private void setButtonPressedStyle() {
+    public void setButtonPressedStyle() {
         setStyle(BUTTON_PRESSED_STYLE);
         setPrefHeight(45);
         setLayoutY(getLayoutY() + 4);
 
     }
 
-    private void setButtonReleasedStyle() {
+    public void setButtonReleasedStyle() {
         setStyle(BUTTON_FREE_STYLE);
         setPrefHeight(45);
         setLayoutY(getLayoutY() - 4);
@@ -53,7 +54,6 @@ public class MenuButton extends Button{
                 if(event.getButton().equals(MouseButton.PRIMARY)) {
                     setButtonPressedStyle();
                 }
-
             }
         });
 
