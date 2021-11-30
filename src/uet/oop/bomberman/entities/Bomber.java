@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 
 public class Bomber extends DynamicEntity {
-    private int heal = 0;
+    private boolean dead = false;
+    private int heal = 1;
     private double speed = 2;
     private final double MAX_SPEED = 4;
     private int power_up = Constant.POWER_UP_1;
@@ -66,6 +67,11 @@ public class Bomber extends DynamicEntity {
     @Override
     public void update() {
         animationFrame.loadFrame();
+        if (animationFrame.isDead() && !dead) {
+                dead = true;
+                heal--;
+                System.out.println("bomedead");
+        }
     }
 
     public void updatePosition (KeyCode direc) {
@@ -74,6 +80,7 @@ public class Bomber extends DynamicEntity {
         if (direc == null) {
             status = Constant.STATUS_STAND;
         } else if(direc == KeyCode.UP) {
+            dead = false;
             y -=  speed;
             status = Constant.STATUS_UP;
             if(!soundMoveUPDown.isRunning()) {
@@ -81,6 +88,7 @@ public class Bomber extends DynamicEntity {
                 soundMoveUPDown.start();
             }
         } else if(direc == KeyCode.RIGHT) {
+            dead = false;
             x +=  speed;
             status = Constant.STATUS_RIGHT;
             if(!soundMoveLeftRight.isRunning()) {
@@ -88,6 +96,7 @@ public class Bomber extends DynamicEntity {
                 soundMoveLeftRight.start();
             }
         } else if(direc == KeyCode.DOWN) {
+            dead = false;
             y +=  speed;
             status = Constant.STATUS_DOWN;
             if(!soundMoveUPDown.isRunning()) {
@@ -95,6 +104,7 @@ public class Bomber extends DynamicEntity {
                 soundMoveUPDown.start();
             }
         } else if(direc == KeyCode.LEFT) {
+            dead = false;
             x -=  speed;
             status = Constant.STATUS_LEFT;
             if(!soundMoveLeftRight.isRunning()) {
@@ -112,7 +122,6 @@ public class Bomber extends DynamicEntity {
             if(entity instanceof Alien || entity instanceof Flame) {
                 Constant.getSound(Constant.URL_SOUND_PLAYER_DIED);
                 status = Constant.STATUS_DESTROY;
-                heal -= 1;
             } else if (entity instanceof Wall || entity instanceof Brick) {
                 x = oldPosX;
                 y = oldPosY;

@@ -2,11 +2,8 @@ package uet.oop.bomberman;
 
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,17 +12,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import uet.oop.bomberman.graphics.SpriteSheet;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.event.TextEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,30 +28,17 @@ public class MenuManager {
     private List<MenuButton> buttons = new ArrayList<>();
     private RunnerSubScene LevelSubScene;
     private RunnerSubScene scoreSubscene;
-    private String url = "/textures/classic.png";
     private String choose;
+    private String urlBackGround = "/img/background.png";
+    private String urlLogo = "/img/logo.png";
+    private String urlLogoScore = "/img/score.png";
+    private ArrayList<List> listScore = new ArrayList<List>();
 
     private void creatBackground() {
-        File file = new File("E:\\dictionary\\game\\bomberman-starter\\src\\uet\\oop\\bomberman\\img\\background.png");
-        String url = null;
-        try {
-            url = file.toURI().toURL().toString();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        javafx.scene.image.Image backgroundImage = new Image(url);
+        URL link = MenuManager.class.getResource(urlBackGround);
+        javafx.scene.image.Image backgroundImage = new Image(link.toString());
         background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(background));
-        /*try {
-            URL a = MenuManager.class.getResource(url);
-            Image backgroundImage = new Image(a);
-
-            background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
-            mainPane.setBackground(new Background(background));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(0);
-        }*/
     }
 
     private void creatLevelSubScene() {
@@ -160,7 +135,49 @@ public class MenuManager {
 
     private void creatScoreSubscene() {
         scoreSubscene = new RunnerSubScene();
-        scoreSubscene.getPane().setStyle("-fx-background-color: #2a2d93");
+        //scoreSubscene.getPane().setStyle("-fx-background-color: #2a2d93");
+        URL urlLogo = MenuManager.class.getResource(urlLogoScore);
+        ImageView logoScore = new ImageView(urlLogo.toString());
+        logoScore.setLayoutX(100);
+        logoScore.setLayoutY(2);
+        logoScore.setFitWidth(200);
+        logoScore.setFitHeight(100);
+
+        logoScore.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                logoScore.setEffect(new DropShadow());
+            }
+        });
+
+        logoScore.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                logoScore.setEffect(null);
+            }
+        });
+
+        Text stt = new Text("STT");
+        stt.setLayoutX(50);
+        stt.setLayoutY(100);
+
+        Text level = new Text("LEVEL");
+        level.setLayoutX(100);
+        level.setLayoutY(100);
+
+        Text kill = new Text("KILL");
+        kill.setLayoutX(170);
+        kill.setLayoutY(100);
+
+        Text heal = new Text("HEAL");
+        heal.setLayoutX(240);
+        heal.setLayoutY(100);
+
+        Text bom = new Text("BOM");
+        bom.setLayoutX(310);
+        bom.setLayoutY(100);
+
+        scoreSubscene.getPane().getChildren().addAll(stt, level, kill, heal, bom, logoScore);
         mainPane.getChildren().add(scoreSubscene);
     }
 
@@ -201,10 +218,10 @@ public class MenuManager {
         buttonLevel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-               LevelSubScene.moveSubScene();
-               if (!LevelSubScene.isHidden && !scoreSubscene.isHidden) {
-                   scoreSubscene.moveSubScene();
-               }
+                LevelSubScene.moveSubScene();
+                if (!LevelSubScene.isHidden && !scoreSubscene.isHidden) {
+                    scoreSubscene.moveSubScene();
+                }
             }
         });
         buttons.add(buttonLevel);
@@ -218,9 +235,9 @@ public class MenuManager {
             @Override
             public void handle(MouseEvent event) {
                 scoreSubscene.moveSubScene();
-               if(!scoreSubscene.isHidden && !LevelSubScene.isHidden) {
-                   LevelSubScene.moveSubScene();
-               }
+                if(!scoreSubscene.isHidden && !LevelSubScene.isHidden) {
+                    LevelSubScene.moveSubScene();
+                }
             }
         });
         buttons.add(buttonScore);
@@ -240,14 +257,8 @@ public class MenuManager {
     }
 
     private void creatLogo() {
-        File file = new File("E:\\dictionary\\game\\bomberman-starter\\src\\uet\\oop\\bomberman\\img\\logo.png");
-        String url = null;
-        try {
-            url = file.toURI().toURL().toString();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        ImageView imageLogo = new ImageView(url);
+        URL link = MenuManager.class.getResource(urlLogo);
+        ImageView imageLogo = new ImageView(link.toString());
 
         imageLogo.setLayoutX(400);
         imageLogo.setLayoutY(0);
