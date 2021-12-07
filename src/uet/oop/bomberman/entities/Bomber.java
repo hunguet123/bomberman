@@ -4,6 +4,7 @@ import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.GameViewManager;
 import uet.oop.bomberman.entities.SubClass.Constant;
 import uet.oop.bomberman.graphics.AnimationFrame;
+import uet.oop.bomberman.graphics.Map;
 import uet.oop.bomberman.graphics.Sprite;
 
 import javax.sound.sampled.*;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 
 
 public class Bomber extends DynamicEntity {
-    private boolean dead = false;
     private int heal = 1;
     private double speed = 2;
     private final double MAX_SPEED = 4;
@@ -21,8 +21,16 @@ public class Bomber extends DynamicEntity {
     private final int DISTANCE_FIX_POS = 1;
     private int oldPosX;
     private int oldPosY;
-//    private int sumBomb = 0;
-    private final int MAX_BOMB = 100;
+
+    public static int coordinateX;
+    public static int coordinateY;
+    public static boolean isDead = false;
+    private long oldTime = 0;
+    private long currentTime = 0;
+    private long duration = 1000;
+
+    //    private int sumBomb = 0;
+    private final int MAX_BOMB = 2000;
     public static KeyCode KEY_BOMB = KeyCode.SPACE;
 
     private Clip soundMoveUPDown = Constant.getSound(Constant.URL_SOUND_MOVE_UP_DOWN);
@@ -63,53 +71,51 @@ public class Bomber extends DynamicEntity {
 
         animationFrame = new AnimationFrame(this, speedAnimation, frameUp, frameRight, frameDown, frameLeft, frameDestroy);
     }
-
     @Override
     public void update() {
         animationFrame.loadFrame();
-        if (animationFrame.isDead() && !dead) {
-                dead = true;
-                heal--;
-                System.out.println("bomedead");
+        if(status == Constant.STATUS_DESTROYED || status == Constant.STATUS_DESTROY) {
+            isDead = true;
+        } else {
+            isDead = false;
         }
     }
 
     public void updatePosition (KeyCode direc) {
+        currentTime = System.currentTimeMillis();
+        if((status == Constant.STATUS_DESTROYED || status == Constant.STATUS_DESTROY) && currentTime - oldTime < duration){
+            return;
+        }
+        coordinateX = x / Sprite.SCALED_SIZE;
+        coordinateY = y / Sprite.SCALED_SIZE;
         oldPosY = y;
         oldPosX = x;
-        if (direc == null) {
+        if (direc == null && status != Constant.STATUS_DESTROYED && status != Constant.STATUS_DESTROY) {
             status = Constant.STATUS_STAND;
         } else if(direc == KeyCode.UP) {
-            dead = false;
             y -=  speed;
             status = Constant.STATUS_UP;
             if(!soundMoveUPDown.isRunning()) {
-                soundMoveUPDown = Constant.getSound(Constant.URL_SOUND_MOVE_UP_DOWN);
-                soundMoveUPDown.start();
+                soundMoveUPDown.loop(1);
             }
         } else if(direc == KeyCode.RIGHT) {
-            dead = false;
             x +=  speed;
             status = Constant.STATUS_RIGHT;
             if(!soundMoveLeftRight.isRunning()) {
-                soundMoveLeftRight = Constant.getSound(Constant.URL_SOUND_MOVE_LEFT_RIGHT);
-                soundMoveLeftRight.start();
+                soundMoveLeftRight.loop(1);
             }
         } else if(direc == KeyCode.DOWN) {
-            dead = false;
             y +=  speed;
             status = Constant.STATUS_DOWN;
             if(!soundMoveUPDown.isRunning()) {
                 soundMoveUPDown = Constant.getSound(Constant.URL_SOUND_MOVE_UP_DOWN);
-                soundMoveUPDown.start();
+                soundMoveUPDown.loop(1);
             }
         } else if(direc == KeyCode.LEFT) {
-            dead = false;
             x -=  speed;
             status = Constant.STATUS_LEFT;
             if(!soundMoveLeftRight.isRunning()) {
-                soundMoveLeftRight = Constant.getSound(Constant.URL_SOUND_MOVE_LEFT_RIGHT);
-                soundMoveLeftRight.start();
+                soundMoveLeftRight.loop(1);
             }
         }  else if(direc == KEY_BOMB) {
             if(status == Constant.STATUS_STAND) {
@@ -120,7 +126,11 @@ public class Bomber extends DynamicEntity {
         Entity entity = subCheckCollision();
         if(entity != null) {
             if(entity instanceof Alien || entity instanceof Flame) {
-                Constant.getSound(Constant.URL_SOUND_PLAYER_DIED);
+                if(status != Constant.STATUS_DESTROY && status != Constant.STATUS_DESTROYED) {
+                    heal--;
+                    oldTime = System.currentTimeMillis();
+                    Constant.getSound(Constant.URL_SOUND_PLAYER_DIED).start();
+                }
                 status = Constant.STATUS_DESTROY;
             } else if (entity instanceof Wall || entity instanceof Brick) {
                 x = oldPosX;
@@ -162,11 +172,13 @@ public class Bomber extends DynamicEntity {
     }
 
     private void setBomb() {
+        System.out.println("x:" + x / Sprite.SCALED_SIZE);
+        System.out.println("y: " + y / Sprite.SCALED_SIZE);
         Constant.getSound(Constant.URL_SOUND_SET_BOMB).start();
         int currentBomb = 0;
         for(int i = 0; i < GameViewManager.stillObjects.size(); i++) {
             if(GameViewManager.stillObjects.get(i) instanceof  Bomb && GameViewManager.stillObjects.get(i).status != Constant.STATUS_DESTROYED) {
-               currentBomb++;
+                currentBomb++;
             }
         }
         if(currentBomb < MAX_BOMB) {

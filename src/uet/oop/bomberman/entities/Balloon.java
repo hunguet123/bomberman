@@ -56,7 +56,7 @@ public class Balloon extends Alien{
         if (status != Constant.STATUS_DESTROYED) {
             currentTime = System.currentTimeMillis();
             if (status != Constant.STATUS_DESTROY) {
-                autoMove();
+                fantasticMove();
                 animationFrame.loadFrame();
                 timeStartDead = System.currentTimeMillis();
             } else {
