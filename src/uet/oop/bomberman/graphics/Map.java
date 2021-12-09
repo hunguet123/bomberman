@@ -30,35 +30,35 @@ public class Map {
         URL url = getClass().getResource(Constant.BASE_MAP_URL + Integer.toString(level) + ".txt");
         file = new File(url.getFile());
         //create grass
-        for (int i = 0; i < Constant.HEIGHT; i++) {
-            for (int j = 0; j < Constant.WIDTH; j++) {
-                GameViewManager.stillObjects.add(new Grass(j, i, Sprite.grass));
-                entityNodeList[j][i] = new Node(j, i, false);
+            for (int i = 0; i < Constant.HEIGHT; i++) {
+                for (int j = 0; j < Constant.WIDTH; j++) {
+                    GameViewManager.stillObjects.add(new Grass(j, i, Sprite.grass));
+                    entityNodeList[j][i] = new Node(j, i, false);
+                }
             }
-        }
         try {
             scanner = new Scanner(file);
             // random item
             for (int i = 0; i < Constant.HEIGHT; i++) {
                 String data = scanner.nextLine();
                 for (int j = 0; j < Constant.WIDTH; j++) {
-                    if(data.charAt(j) == Constant.MAP_BRICK) {
-                        int random = random();
-                        if(random == Constant.PERCENT_ITEM_HEAL) {
-                            GameViewManager.stillObjects.add(new Item(j, i, Sprite.powerup_detonator, Constant.TYPE_ITEM_HEAL));
-                        } else if(random == Constant.PERCENT_ITEM_BOMB) {
-                            GameViewManager.stillObjects.add(new Item(j, i, Sprite.powerup_bombs, Constant.TYPE_ITEM_BOMB));
-                        } else if(random == Constant.PERCENT_ITEM_SPEED) {
-                            GameViewManager.stillObjects.add(new Item(j, i, Sprite.powerup_speed, Constant.TYPE_ITEM_SPEED));
-                        }
-                    }
-                    if(j - 1 >= 0)
-                        entityNodeList[j][i].listNode.add(entityNodeList[j - 1][i]);
-                    if(i - 1 >= 0)
+                   if(data.charAt(j) == Constant.MAP_BRICK) {
+                       int random = random();
+                       if(random == Constant.PERCENT_ITEM_HEAL) {
+                           GameViewManager.stillObjects.add(new Item(j, i, Sprite.powerup_detonator, Constant.TYPE_ITEM_HEAL));
+                       } else if(random == Constant.PERCENT_ITEM_BOMB) {
+                           GameViewManager.stillObjects.add(new Item(j, i, Sprite.powerup_bombs, Constant.TYPE_ITEM_BOMB));
+                       } else if(random == Constant.PERCENT_ITEM_SPEED) {
+                           GameViewManager.stillObjects.add(new Item(j, i, Sprite.powerup_speed, Constant.TYPE_ITEM_SPEED));
+                       }
+                   }
+                   if(j - 1 >= 0)
+                       entityNodeList[j][i].listNode.add(entityNodeList[j - 1][i]);
+                   if(i - 1 >= 0)
                         entityNodeList[j][i].listNode.add(entityNodeList[j][i - 1]);
-                    if(j + 1 < Constant.WIDTH)
+                   if(j + 1 < Constant.WIDTH)
                         entityNodeList[j][i].listNode.add(entityNodeList[j + 1][i]);
-                    if(i + 1 < Constant.HEIGHT)
+                   if(i + 1 < Constant.HEIGHT)
                         entityNodeList[j][i].listNode.add(entityNodeList[j][i + 1]);
                 }
             }
@@ -81,7 +81,7 @@ public class Map {
                     } else if (data.charAt(j) == Constant.MAP_ONEAL) {
                         GameViewManager.stillObjects.add(new Oneal(j ,i, Sprite.oneal_right1));
                     }
-                    if(data.charAt(j) == Constant.MAP_GRASS || data.charAt(j) == Constant.MAP_PLAYER) {
+                    if(data.charAt(j) == Constant.MAP_GRASS || data.charAt(j) == Constant.MAP_PLAYER || data.charAt(j) == Constant.MAP_BOLLOOM || data.charAt(j) == Constant.MAP_ONEAL) {
                         entityNodeList[j][i].isGrass  = true;
                     }
                 }

@@ -4,7 +4,6 @@ import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.GameViewManager;
 import uet.oop.bomberman.entities.SubClass.Constant;
 import uet.oop.bomberman.graphics.AnimationFrame;
-import uet.oop.bomberman.graphics.Map;
 import uet.oop.bomberman.graphics.Sprite;
 
 import javax.sound.sampled.*;

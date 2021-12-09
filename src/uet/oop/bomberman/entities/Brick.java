@@ -1,9 +1,8 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.SubClass.Constant;
 import uet.oop.bomberman.graphics.AnimationFrame;
+import uet.oop.bomberman.graphics.Map;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ public class Brick extends DynamicEntity {
                 status = Constant.STATUS_DESTROYED;
                 animationFrame.loadFrame();
                 animationFrame.stopAnimation();
+                Map.entityNodeList[x / Sprite.SCALED_SIZE][y / Sprite.SCALED_SIZE].isGrass = true;
             }
         }
     }

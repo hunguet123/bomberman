@@ -30,6 +30,7 @@ public class MenuManager {
     private List<MenuButton> buttons = new ArrayList<>();
     private RunnerSubScene LevelSubScene;
     private RunnerSubScene scoreSubscene =  new RunnerSubScene();
+    private int count = 0;
 
     private String choose;
     private String urlBackGround = "/img/background.png";
@@ -276,14 +277,12 @@ public class MenuManager {
             public void handle(MouseEvent event) {
                 if (gameViewManager != null) {
                     gameViewManager.isClosed = true;
+                    count++;
                 }
                 gameViewManager = new GameViewManager();
                 gameViewManager.setLevel(choose);
                 gameViewManager.initializeStage();
                 gameViewManager.creatNewGame();
-                //System.out.println(gameViewManager.getLevel());
-                //System.out.println(choose.substring(4));
-                //mainStage.close();
             }
         });
         buttons.add(buttonPlay);

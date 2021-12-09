@@ -3,10 +3,8 @@ package uet.oop.bomberman.entities;
 import uet.oop.bomberman.GameViewManager;
 import uet.oop.bomberman.entities.SubClass.Constant;
 import uet.oop.bomberman.graphics.AnimationFrame;
-import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.graphics.SpriteSheet;
+import uet.oop.bomberman.graphics.*;
 
-import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 
 public class Bomb extends Entity {
@@ -38,6 +36,7 @@ public class Bomb extends Entity {
         animationFrame.loadFrame();
         currentTime = System.currentTimeMillis();
         startTime = System.currentTimeMillis();
+        Map.entityNodeList[x / Sprite.SCALED_SIZE][y / Sprite.SCALED_SIZE].isGrass = false;
     }
 
     private void init() {
@@ -94,6 +93,8 @@ public class Bomb extends Entity {
             betweenBottom.get(i).startFlame();
             betweenLeft.get(i).startFlame();
         }
+        Map.entityNodeList[x / Sprite.SCALED_SIZE][y / Sprite.SCALED_SIZE].isGrass = true;
+
     }
 
     private boolean preventFlame(ArrayList<Flame> between) {

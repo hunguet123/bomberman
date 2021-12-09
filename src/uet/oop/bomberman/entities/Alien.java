@@ -1,11 +1,9 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.image.Image;
-import javafx.scene.shape.Circle;
 import uet.oop.bomberman.entities.SubClass.Constant;
 import uet.oop.bomberman.entities.SubClass.Node;
+import uet.oop.bomberman.graphics.*;
 import uet.oop.bomberman.graphics.Map;
-import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.*;
 
@@ -17,7 +15,7 @@ public class Alien extends DynamicEntity {
     private ArrayList <Node> minWay = null;
     private long currentTime = 0;
     private long oldTime = 0;
-    private long durationFindMinWay = 2000;
+    private long durationFindMinWay = 1000;
     public Alien(int xUnit, int yUnit, Sprite sprite) {
         super(xUnit, yUnit, sprite);
     }
@@ -32,7 +30,6 @@ public class Alien extends DynamicEntity {
     protected void fantasticMove() {
         currentTime = System.currentTimeMillis();
         int collision = checkCollision();
-        boolean isCollar = false;
         if(currentTime - oldTime > durationFindMinWay) {
             oldTime = System.currentTimeMillis();
             minWay = initForMethodFindWay();
@@ -44,12 +41,13 @@ public class Alien extends DynamicEntity {
             oldTime = currentTime;
             minWay = null;
             nodeNext = null;
-            isCollar = true;
         }
-        if(!isCollar && minWay != null) {
+        if(minWay != null) {
             if(moveFlowMinWay() == true) {
-                minWay = null;
-                nodeNext = null;
+                minWay = initForMethodFindWay();
+                if(minWay != null) {
+                    nodeNext = minWay.get(0);
+                }
             }
         } else {
             autoMove();
@@ -97,6 +95,7 @@ public class Alien extends DynamicEntity {
     }
 
     private boolean moveFlowMinWay() {
+//        System.out.println("martmove");
         if(checkCollision() == Constant.COLLISION_WITH_FLAME) {
             if (this instanceof Oneal) {
                 Constant.score+=1;
@@ -159,6 +158,9 @@ public class Alien extends DynamicEntity {
         ArrayList<Node> result = findMinWayToBomber(listNode, listPrev, isVisited);
         if(result != null) {
             Collections.reverse(result);
+            System.out.println("find way");
+        } else {
+            System.out.println("no find way");
         }
         return result;
     }

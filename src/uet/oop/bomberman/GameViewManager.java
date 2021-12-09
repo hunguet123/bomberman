@@ -1,15 +1,12 @@
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,21 +18,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.image.RGBImageFilter;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.SubClass.Constant;
+import uet.oop.bomberman.graphics.*;
 import uet.oop.bomberman.graphics.Map;
-import uet.oop.bomberman.graphics.Sprite;
-
-import java.awt.*;
-import java.util.concurrent.TimeUnit;
-
-import static java.util.concurrent.TimeUnit.*;
 
 public class GameViewManager {
     private Scene scene;
@@ -46,9 +37,10 @@ public class GameViewManager {
     public static List<Entity> stillObjects;
     private Bomber bomber = null;
     private KeyCode direc = null;
-    private String Level;
+    private String Level = "Level1";
     private int heal;
     private double speed;
+    private int power;
     private HBox menu;
     private ImageView winImg;
     private int winGame = 0;
@@ -59,6 +51,8 @@ public class GameViewManager {
     private Text textHeal = new Text("0");
     private Text textSpeed  = new Text("0");
     private Text textPowerup = new Text("0");
+    private Text textLevel = new Text("Level1");
+    private Text textPower = new Text();
 
 
     public GameViewManager() {
@@ -91,20 +85,27 @@ public class GameViewManager {
         textHeal.setY(30);
         textPowerup.setFont(new Font("verdana", 15));
         textPowerup.setFill(Color.rgb(47,226,226));
-        textPowerup.setX(150);
+        textPowerup.setX(100);
         textPowerup.setY(30);
         textSpeed.setFont(new Font("verdana", 15));
         textSpeed.setFill(Color.rgb(47,226,226));
-        textSpeed.setX(250);
+        textSpeed.setX(180);
         textSpeed.setY(30);
-
+        textLevel.setFont(new Font("verdana", 15));
+        textLevel.setFill(Color.rgb(47, 226,226));
+        textLevel.setX(270);
+        textLevel.setY(30);
+        textPower.setFont(new Font("verdana", 15));
+        textPower.setFill(Color.rgb(47, 226, 226));
+        textPower.setX(350);
+        textPower.setY(30);
 
 
 
         // Tao root container
         Group root = new Group();
         root.setClip(new Rectangle(Sprite.SCALED_SIZE * (Constant.WIDTH / 2), Sprite.SCALED_SIZE * (Constant.HEIGHT + Constant.HEIGHT_MENU)));
-        root.getChildren().addAll(menu, canvas, textHeal,textPowerup, textSpeed);
+        root.getChildren().addAll(menu, canvas, textHeal,textPowerup, textSpeed, textLevel, textPower);
         canvas.setLayoutY(Sprite.SCALED_SIZE * Constant.HEIGHT_MENU);
 
         // Tao scene
@@ -249,10 +250,18 @@ public class GameViewManager {
     private void updateSocore() {
         heal = bomber.getHeal();
         speed = bomber.getSpeed();
+        power = bomber.getPower_up();
+        textPower.setText("Sức mạnh: " + String.valueOf(power));
         textHeal.setText("Mạng: " + String.valueOf(heal));
         textPowerup.setText("Điểm: " + String.valueOf(Constant.score));
         textSpeed.setText("Tốc độ: " + String.valueOf(speed));
-
+        int level;
+        if (Level != null) {
+            level = Integer.parseInt(Level.substring(5));
+        } else {
+            level = 1;
+        }
+        textLevel.setText("Level: " + level);
     }
 
     public void creatNewGame() {
@@ -266,6 +275,10 @@ public class GameViewManager {
     public void gameOver() {
 
 
+    }
+
+    public void gameClose() {
+        gameStage.close();
     }
 
     public String getLevel() {
