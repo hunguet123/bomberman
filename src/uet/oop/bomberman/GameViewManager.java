@@ -100,8 +100,6 @@ public class GameViewManager {
         textPower.setX(350);
         textPower.setY(30);
 
-
-
         // Tao root container
         Group root = new Group();
         root.setClip(new Rectangle(Sprite.SCALED_SIZE * (Constant.WIDTH / 2), Sprite.SCALED_SIZE * (Constant.HEIGHT + Constant.HEIGHT_MENU)));
@@ -232,6 +230,8 @@ public class GameViewManager {
             }
             updateCanvas();
             updateSocore();
+        } else {
+            stillObjects = null;
         }
     }
 

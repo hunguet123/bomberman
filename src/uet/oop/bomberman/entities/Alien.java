@@ -158,9 +158,9 @@ public class Alien extends DynamicEntity {
         ArrayList<Node> result = findMinWayToBomber(listNode, listPrev, isVisited);
         if(result != null) {
             Collections.reverse(result);
-            System.out.println("find way");
+            System.out.println("tim thay");
         } else {
-            System.out.println("no find way");
+            System.out.println("khong tim thay");
         }
         return result;
     }
